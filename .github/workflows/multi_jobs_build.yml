@@ -1,0 +1,44 @@
+name: Multi jobs build project
+on: push
+jobs:
+  lint-job:
+   runs-on:  ubuntu-latest
+   steps:
+    - name: Get code
+      uses: actions/checkout@v4
+    - name: Install node js
+      uses: actions/setup-node@v4
+      with: 
+         node-version: 18
+    - name: install Dependencies
+      run: npm ci
+    - name: lint
+      run: npm run lint
+  build-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: Install node js
+        uses: actions/setup-node@v4
+        with: 
+           node-version: 18
+      - name: install Dependencies
+        run: npm ci
+      - name: build
+        run: npm run build
+  test-deploy-job:
+    needs: [build-job,lint-job]
+    runs-on: ubuntu-latest 
+    steps:
+        - name: Get code
+          uses: actions/checkout@v4
+        - name: Install node js
+          uses: actions/setup-node@v4
+          with: 
+             node-version: 18
+        - name: install Dependencies
+          run: npm ci
+        - name: test
+          run: npm run test
+  

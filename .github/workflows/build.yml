@@ -1,0 +1,22 @@
+name: build project
+on: push
+jobs:
+  lint-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v4
+      - name: install Node js
+        uses: actions/setup-node@v4
+        with: 
+           node-version: 18
+      - name: Install Dependencies
+        run: npm ci
+      - name: lint check
+        run: npm run lint
+      - name: build
+        run: npm run build
+      - name: test
+        run: npm run test
+      - name: deploy
+        run:  echo "Deploying...."  
